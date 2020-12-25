@@ -1,0 +1,17 @@
+{
+  "name": "y-utils",
+  "version": "0.0.0",
+  "description": "my functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "build test"
+  },
+  "keywords": [
+    "utils"
+  ],
+  "author": "ylf",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
+}
