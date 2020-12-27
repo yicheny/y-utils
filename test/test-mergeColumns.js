@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const mergeColumns = require('../src/class/MergeColumns');
+const mergeColumns = require('../src/MergeColumns');
 
 function createSource() {
     return [
