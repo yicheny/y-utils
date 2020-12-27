@@ -15,12 +15,13 @@ class MergeColumns{
     }
 
     pick(values){
-        this._data = _.filter(this._data,x=>values.includes(x[this._key]));
+        // if(!_.isArray(values)) return this;
+        this._data = _.filter(this._data,x=>_.includes(values,x[this._key]));
         return this;
     }
 
     omit(values){
-        this._data = _.filter(this._data,x=>!values.includes(x[this._key]));
+        this._data = _.filter(this._data,x=>!_.includes(values,x[this._key]));
         return this;
     }
 

@@ -22,6 +22,17 @@ describe('mergeColumns基础测试', function () {
             MergeColumns.create('bind', source).pick(['b1']).data,
             [{header: 'h1', bind: 'b1', width:100}]
         );
+
+        assert.deepEqual(MergeColumns.create('header',source).pick().data, []);
+        assert.deepEqual(MergeColumns.create('header',source).pick(undefined).data, []);
+        assert.deepEqual(MergeColumns.create('header',source).pick(null).data, []);
+        assert.deepEqual(MergeColumns.create(null,source).pick().data, []);
+        assert.deepEqual(MergeColumns.create(null,source).pick(undefined).data, []);
+        assert.deepEqual(MergeColumns.create(null,source).pick(null).data, []);
+
+        assert.deepEqual(MergeColumns.create('header',source).pick([]).data, []);
+
+        assert.deepEqual(MergeColumns.create('header',source).pick(source.map(x=>x['header'])).data, source);
     });
 
     it('省略 omit', function () {
@@ -34,6 +45,17 @@ describe('mergeColumns基础测试', function () {
             MergeColumns.create('bind', source).omit(['b2','b3']).data,
             [{header: 'h1', bind: 'b1', width:100}]
         );
+
+        assert.deepEqual(MergeColumns.create('header',source).omit().data, source);
+        assert.deepEqual(MergeColumns.create('header',source).omit(undefined).data, source);
+        assert.deepEqual(MergeColumns.create('header',source).omit(null).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).omit().data, source);
+        assert.deepEqual(MergeColumns.create(null,source).omit(undefined).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).omit(null).data, source);
+
+        assert.deepEqual(MergeColumns.create('header',source).omit([]).data, source);
+
+        assert.deepEqual(MergeColumns.create('header',source).omit(source.map(x=>x['header'])).data, []);
     });
 
     it('插入 insert', function () {
@@ -60,6 +82,14 @@ describe('mergeColumns基础测试', function () {
                 { header: 'h3', bind: 'b3' },
                 { header: 'h4', bind: 'b4' } ]
         );
+
+        assert.deepEqual(MergeColumns.create('header',source).insert().data, source);
+        assert.deepEqual(MergeColumns.create('header',source).insert(null).data, source);
+        assert.deepEqual(MergeColumns.create('header',source).insert(undefined).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).insert().data, source);
+        assert.deepEqual(MergeColumns.create(null,source).insert(null).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).insert(undefined).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).insert([]).data, source);
     });
 
     it('更新 update',function(){
@@ -83,6 +113,14 @@ describe('mergeColumns基础测试', function () {
                 { header: 'h2', bind: 'b2' },
                 { header: 'h3', bind: 'b3', width: 88 } ]
         )
+
+        assert.deepEqual(MergeColumns.create('header',source).update().data, source);
+        assert.deepEqual(MergeColumns.create('header',source).update(null).data, source);
+        assert.deepEqual(MergeColumns.create('header',source).update(undefined).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).update().data, source);
+        assert.deepEqual(MergeColumns.create(null,source).update(null).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).update(undefined).data, source);
+        assert.deepEqual(MergeColumns.create(null,source).update([]).data, source);
     })
 })
 
