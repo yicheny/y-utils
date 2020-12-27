@@ -4,7 +4,7 @@
   "description": "my functions",
   "main": "index.js",
   "scripts": {
-    "test": "build test"
+    "test": "mocha ./test/test-mergeColumns.js"
   },
   "keywords": [
     "utils"
@@ -13,5 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1"
   }
 }
