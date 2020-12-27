@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const MergeColumns = require('../src/class/MergeColumns');
+const mergeColumns = require('../src/class/MergeColumns');
 
 function createSource() {
     return [
@@ -14,53 +14,53 @@ const source = createSource();
 describe('mergeColumns基础测试', function () {
     it('选取 pick', function () {
         assert.deepEqual(
-            MergeColumns.create('header', source).pick(['h2', 'h3']).data,
+            mergeColumns('header', source).pick(['h2', 'h3']).data,
             [{header: 'h2', bind: 'b2'}, {header: 'h3', bind: 'b3'}]
         );
 
         assert.deepEqual(
-            MergeColumns.create('bind', source).pick(['b1']).data,
+            mergeColumns('bind', source).pick(['b1']).data,
             [{header: 'h1', bind: 'b1', width:100}]
         );
 
-        assert.deepEqual(MergeColumns.create('header',source).pick().data, []);
-        assert.deepEqual(MergeColumns.create('header',source).pick(undefined).data, []);
-        assert.deepEqual(MergeColumns.create('header',source).pick(null).data, []);
-        assert.deepEqual(MergeColumns.create(null,source).pick().data, []);
-        assert.deepEqual(MergeColumns.create(null,source).pick(undefined).data, []);
-        assert.deepEqual(MergeColumns.create(null,source).pick(null).data, []);
+        assert.deepEqual(mergeColumns('header',source).pick().data, []);
+        assert.deepEqual(mergeColumns('header',source).pick(undefined).data, []);
+        assert.deepEqual(mergeColumns('header',source).pick(null).data, []);
+        assert.deepEqual(mergeColumns(null,source).pick().data, []);
+        assert.deepEqual(mergeColumns(null,source).pick(undefined).data, []);
+        assert.deepEqual(mergeColumns(null,source).pick(null).data, []);
 
-        assert.deepEqual(MergeColumns.create('header',source).pick([]).data, []);
+        assert.deepEqual(mergeColumns('header',source).pick([]).data, []);
 
-        assert.deepEqual(MergeColumns.create('header',source).pick(source.map(x=>x['header'])).data, source);
+        assert.deepEqual(mergeColumns('header',source).pick(source.map(x=>x['header'])).data, source);
     });
 
-    it('省略 omit', function () {
+    it('忽略 omit', function () {
         assert.deepEqual(
-            MergeColumns.create('header', source).omit(['h1']).data,
+            mergeColumns('header', source).omit(['h1']).data,
             [{header: 'h2', bind: 'b2'}, {header: 'h3', bind: 'b3'}]
         );
 
         assert.deepEqual(
-            MergeColumns.create('bind', source).omit(['b2','b3']).data,
+            mergeColumns('bind', source).omit(['b2','b3']).data,
             [{header: 'h1', bind: 'b1', width:100}]
         );
 
-        assert.deepEqual(MergeColumns.create('header',source).omit().data, source);
-        assert.deepEqual(MergeColumns.create('header',source).omit(undefined).data, source);
-        assert.deepEqual(MergeColumns.create('header',source).omit(null).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).omit().data, source);
-        assert.deepEqual(MergeColumns.create(null,source).omit(undefined).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).omit(null).data, source);
+        assert.deepEqual(mergeColumns('header',source).omit().data, source);
+        assert.deepEqual(mergeColumns('header',source).omit(undefined).data, source);
+        assert.deepEqual(mergeColumns('header',source).omit(null).data, source);
+        assert.deepEqual(mergeColumns(null,source).omit().data, source);
+        assert.deepEqual(mergeColumns(null,source).omit(undefined).data, source);
+        assert.deepEqual(mergeColumns(null,source).omit(null).data, source);
 
-        assert.deepEqual(MergeColumns.create('header',source).omit([]).data, source);
+        assert.deepEqual(mergeColumns('header',source).omit([]).data, source);
 
-        assert.deepEqual(MergeColumns.create('header',source).omit(source.map(x=>x['header'])).data, []);
+        assert.deepEqual(mergeColumns('header',source).omit(source.map(x=>x['header'])).data, []);
     });
 
     it('插入 insert', function () {
         assert.deepEqual(
-            MergeColumns.create('header',source).insert([{_beforeKey:'h1',header:'h0',bind:'b0'}]).data,
+            mergeColumns('header',source).insert([{_beforeKey:'h1',header:'h0',bind:'b0'}]).data,
             [ { header: 'h0', bind: 'b0' },
                 { header: 'h1', bind: 'b1', width:100 },
                 { header: 'h2', bind: 'b2' },
@@ -68,7 +68,7 @@ describe('mergeColumns基础测试', function () {
         );
 
         assert.deepEqual(
-            MergeColumns.create('header',source).insert([{_beforeKey:'h3',header:'h2.5',bind:'b2.5'}]).data,
+            mergeColumns('header',source).insert([{_beforeKey:'h3',header:'h2.5',bind:'b2.5'}]).data,
             [ { header: 'h1', bind: 'b1', width:100 },
                 { header: 'h2', bind: 'b2' },
                 { header: 'h2.5',bind:'b2.5'},
@@ -76,58 +76,58 @@ describe('mergeColumns基础测试', function () {
         );
 
         assert.deepEqual(
-            MergeColumns.create('header',source).insert([{_afterKey:'h3',header:'h4',bind:'b4'}]).data,
+            mergeColumns('header',source).insert([{_afterKey:'h3',header:'h4',bind:'b4'}]).data,
             [ { header: 'h1', bind: 'b1', width:100 },
                 { header: 'h2', bind: 'b2' },
                 { header: 'h3', bind: 'b3' },
                 { header: 'h4', bind: 'b4' } ]
         );
 
-        assert.deepEqual(MergeColumns.create('header',source).insert().data, source);
-        assert.deepEqual(MergeColumns.create('header',source).insert(null).data, source);
-        assert.deepEqual(MergeColumns.create('header',source).insert(undefined).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).insert().data, source);
-        assert.deepEqual(MergeColumns.create(null,source).insert(null).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).insert(undefined).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).insert([]).data, source);
+        assert.deepEqual(mergeColumns('header',source).insert().data, source);
+        assert.deepEqual(mergeColumns('header',source).insert(null).data, source);
+        assert.deepEqual(mergeColumns('header',source).insert(undefined).data, source);
+        assert.deepEqual(mergeColumns(null,source).insert().data, source);
+        assert.deepEqual(mergeColumns(null,source).insert(null).data, source);
+        assert.deepEqual(mergeColumns(null,source).insert(undefined).data, source);
+        assert.deepEqual(mergeColumns(null,source).insert([]).data, source);
     });
 
     it('更新 update',function(){
         assert.deepEqual(
-            MergeColumns.create('header',source).update([{_key:'h1',width:300}]).data,
+            mergeColumns('header',source).update([{_key:'h1',width:300}]).data,
             [ { header: 'h1', bind: 'b1', width: 300 },
                 { header: 'h2', bind: 'b2' },
                 { header: 'h3', bind: 'b3' } ]
         )
 
         assert.deepEqual(
-            MergeColumns.create('header',source).update([{_key:'h1',width:undefined}]).data,
+            mergeColumns('header',source).update([{_key:'h1',width:undefined}]).data,
             [ { header: 'h1', bind: 'b1', width: undefined },
                 { header: 'h2', bind: 'b2' },
                 { header: 'h3', bind: 'b3' } ]
         )
 
         assert.deepEqual(
-            MergeColumns.create('header',source).update([{_key:'h3',width:88}]).data,
+            mergeColumns('header',source).update([{_key:'h3',width:88}]).data,
             [ { header: 'h1', bind: 'b1', width: 100 },
                 { header: 'h2', bind: 'b2' },
                 { header: 'h3', bind: 'b3', width: 88 } ]
         )
 
-        assert.deepEqual(MergeColumns.create('header',source).update().data, source);
-        assert.deepEqual(MergeColumns.create('header',source).update(null).data, source);
-        assert.deepEqual(MergeColumns.create('header',source).update(undefined).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).update().data, source);
-        assert.deepEqual(MergeColumns.create(null,source).update(null).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).update(undefined).data, source);
-        assert.deepEqual(MergeColumns.create(null,source).update([]).data, source);
+        assert.deepEqual(mergeColumns('header',source).update().data, source);
+        assert.deepEqual(mergeColumns('header',source).update(null).data, source);
+        assert.deepEqual(mergeColumns('header',source).update(undefined).data, source);
+        assert.deepEqual(mergeColumns(null,source).update().data, source);
+        assert.deepEqual(mergeColumns(null,source).update(null).data, source);
+        assert.deepEqual(mergeColumns(null,source).update(undefined).data, source);
+        assert.deepEqual(mergeColumns(null,source).update([]).data, source);
     })
 })
 
 describe('mergeColumns组合测试',function(){
     it('选取并插入 pick+insert',function (){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .pick(['h2', 'h3'])
                 .insert([
                     {_beforeKey:'h2',header:'h0',bind:'h0'},
@@ -141,9 +141,9 @@ describe('mergeColumns组合测试',function(){
         );
     });
 
-    it('省略并插入 omit+insert',function(){
+    it('忽略并插入 omit+insert',function(){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .omit(['h1','h3'])
                 .insert([
                     {_beforeKey:'h2',header:'h0',bind:'h0'},
@@ -158,7 +158,7 @@ describe('mergeColumns组合测试',function(){
 
     it('选取并更新 pick+update',function(){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .pick(['h2', 'h3'])
                 .update([
                     {_key:'h2',header:'h2-update',width:88},
@@ -169,9 +169,9 @@ describe('mergeColumns组合测试',function(){
         );
     });
 
-    it('省略并更新 omit+update',function(){
+    it('忽略并更新 omit+update',function(){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .omit(['h2'])
                 .update([
                     {_key:'h1',header:'h1-update',width:123},
@@ -184,7 +184,7 @@ describe('mergeColumns组合测试',function(){
 
     it('插入并更新 insert+update',function(){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .insert([
                     {_beforeKey:'h1',header:'h0',bind:'h0'},
                     {_afterKey:'h3',header:'h4',bind:'h4'}
@@ -205,7 +205,7 @@ describe('mergeColumns组合测试',function(){
 
     it('挑选、插入并更新 pick+insert+update',function(){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .pick(['h1','h3'])
                 .insert([
                     {_beforeKey:'h1',header:'h0',bind:'h0'},
@@ -226,9 +226,9 @@ describe('mergeColumns组合测试',function(){
 
     });
 
-    it('省略、插入并更新 omit+insert+update',function(){
+    it('忽略、插入并更新 omit+insert+update',function(){
         assert.deepEqual(
-            MergeColumns.create('header', source)
+            mergeColumns('header', source)
                 .omit(['h2'])
                 .insert([
                     {_beforeKey:'h1',header:'h0',bind:'h0'},

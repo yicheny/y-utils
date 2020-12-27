@@ -57,7 +57,8 @@ class MergeColumns{
     }
 }
 
-module.exports = MergeColumns;
+const mergeColumns = MergeColumns.create;
+module.exports = mergeColumns;
 
 //
 test();
