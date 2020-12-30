@@ -7,16 +7,20 @@ author: ylf
 class MergeColumns{
     constructor(key,source) {
         this._key = key;
-        this._data = _.cloneDeep(source);
+        this._data = _.isArray(source) ? _.cloneDeep(source) : [];
     }
 
     static create(...params){
         return new MergeColumns(...params);
     }
 
-    pick(values){
-        // if(!_.isArray(values)) return this;
-        this._data = _.filter(this._data,x=>_.includes(values,x[this._key]));
+    pick(keys){
+        // this._data = _.filter(this._data,x=>_.includes(keys,x[this._key]));
+        this._data = _.reduce(keys,(acc,key)=>{
+            const item = _.find(this._data,x=>x[this._key] === key);
+            item && acc.push(item);
+            return acc;
+        },[])
         return this;
     }
 
@@ -52,6 +56,18 @@ class MergeColumns{
         return this;
     }
 
+    head(data){
+        if(_.isPlainObject(data)) this._data.unshift(data);
+        if(_.isArray(data)) this._data = _.concat(data,this._data);
+        return this;
+    }
+
+    tail(data){
+        if(_.isPlainObject(data)) this._data.push(data);
+        if(_.isArray(data)) this._data = _.concat(this._data,data);
+        return this;
+    }
+
     get data(){
         return this._data;
     }
@@ -64,13 +80,14 @@ module.exports = mergeColumns;
 test();
 
 function test(){
-    // const source = [
-    //     {header:'h1',bind:'b1',width:100},
-    //     {header:'h2',bind:'b2'},
-    //     {header:'h3',bind:'b3'},
-    // ];
+    const source = [
+        {header:'h1',bind:'b1',width:100},
+        {header:'h2',bind:'b2'},
+        {header:'h3',bind:'b3'},
+    ];
 
     // console.log(MergeColumns.create('header',source).pick(['h2','h3']).data);
+    console.log(MergeColumns.create('header',source).pick(['h3','h1']).data);
     // console.log(MergeColumns.create('header',source).omit(['h1']).data);
 
     // console.log(MergeColumns.create('header',source).insert([{_beforeKey:'h1',header:'h0',bind:'b0'}]).data);
