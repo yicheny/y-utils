@@ -1,5 +1,5 @@
 {
-  "name": "y-utils",
+  "name": "ylf-utils",
   "version": "0.0.0",
   "description": "Tools and methods I use often",
   "main": "./src/index.js",
