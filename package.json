@@ -1,10 +1,14 @@
 {
   "name": "y-utils",
   "version": "0.0.0",
-  "description": "my functions",
-  "main": "index.js",
+  "description": "Tools and methods I use often",
+  "main": "./src/index.js",
   "scripts": {
-    "test": "mocha ./test/test-mergeColumns.js"
+    "test": "mocha ./test/test-df.js",
+    "pub": "npm publish --registry https://registry.npmjs.org",
+    "pub:patch": "npm version patch && npm run pub",
+    "pub:minor": "npm version minor && npm run pub",
+    "pub:major": "npm version major && npm run pub"
   },
   "keywords": [
     "utils"
